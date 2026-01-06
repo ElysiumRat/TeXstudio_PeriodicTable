@@ -22,13 +22,17 @@ This section provides a technical overview of the code of the macro and its func
 
 To create an array, you need to call it this way:
 
-`var arrayname = ["Input1", "Input2"]`
+```javascript
+var arrayname = ["Input1", "Input2"]
+```
 
 All items in the array need to be placed within the square brackets. Individual items within the array need to be placed between double quotation marks and separated with commas. Unfortunately, TeXstudio only seems to allow for one-dimensional arrays, hence these macros all use multiple arrays with the matching data at the same index. The first item in an array is always at the index point 0.
 
 To call a value from an array, you do so with the following code:
 
-`examplevariable = arrayname[i]`
+```javascript
+examplevariable = arrayname[i]
+```
 
 So, using the above example, `arrayname[0]` would return “Input1” and store it in `examplevariable`.
 
@@ -38,31 +42,43 @@ The `UniversalInputDialog` is used to allow the user to input information into t
 
 Firstly, you need to create it within the code in the following way:
 
-`dlg = new UniversalInputDialog()`
+```javascript
+dlg = new UniversalInputDialog()
+```
 
 Thereafter, you need to add input fields to it in the following manner:
 
-`dlg.add(DEFAULT, MESSAGE, TYPE)`
+```javascript
+dlg.add(DEFAULT, MESSAGE, TYPE)
+```
 
 In this code, `DEFAULT` is what is within the textbox that the macro uses, and is sometimes needed to be within quotation marks. `MESSAGE`, within quotation marks, is the label that the textbox has, telling the user what to input. Finally, `TYPE` (again, in quotation marks) is the type of input box. These macros only use textbox, which is structured as follows:
 
-`dlg.add("","Please input:", "textbox")`
+```javascript
+dlg.add("","Please input:", "textbox")
+```
 
 In this case, `DEFAULT` needs to be in inverted commas. The other possible types will be discussed now. First, checkbox:
 
-`dlg.add(false, "Please check:", "checkbox")`
+```javascript
+dlg.add(false, "Please check:", "checkbox")
+```
 
 Whereby `false` sets the checkbox as unchecked, and `true` would set it as checked.
 
 Second, `selectbox`:
 
-`dlg.add(["1","2"], "Please select:", "selectbox")`
+```javascript
+dlg.add(["1","2"], "Please select:", "selectbox")
+```
 
 Whereby the values are contained within an array, as was discussed above.
 
 Finally, there is `numberbox`:
 
-`dlg.add(0, "Please type:", "numberbox")`
+```javascript
+dlg.add(0, "Please type:", "numberbox")
+```
 
 This is, naturally, used when only a number is required.
 
@@ -72,7 +88,7 @@ Finally, this section gives a detailed description of how specific aspects of th
 
 The first thing that the macros attempt to do is grab the text that the user has selected. First, the macros determine whether there is a selection, and calls a `UniversalInputDialog` box if there is none, allowing the user to input their own string, which is stored in the search variable: 
 
-```
+```javascript
 if (cursor.hasSelection() == false)
 {
 	dlg = new UniversalInputDialog()
@@ -84,7 +100,7 @@ if (cursor.hasSelection() == false)
 
 However, if the cursor has a selection, the macro simply copies what was selected to the search variable:
 
-```
+```javascript
 else
 {
 	search = cursor.selectedText()
@@ -93,7 +109,7 @@ else
 
 Next, the macro checks if search is still empty. If so, it changes `noinput` to true, and this will be used later. Otherwise, if it has text, then it changes the text to uppercase. The structure here is to ensure that an error does not occur if search is empty, and the need to uppercase the entire search phrase will be explained later.
 
-```
+```javascript
 if (search == "")
 {
 	noinput = true
@@ -110,11 +126,13 @@ Next, the macros run through the arrays and compare `search` to the contents the
 
 In short, the macro tests the variables in the same position in each array in every loop. This is so that the macro works efficiently, not needing to run through each array in a separate loop. The loop simply runs this way:
 
-`while (i < UPPER)`
+```javascript
+while (i < UPPER)
+```
 
 with `UPPER` referring to the highest value of the arrays. The tests are done in the following fashion:
 
-```
+```javascript
 temp1 = array1[i].toUpperCase()
 match1 = temp1.includes(search)
 ```
@@ -123,11 +141,13 @@ What this code does is saves the value at position i of the array into a tempora
 
 Thereafter, it performs the following test:
 
-`if (match1 > 0 && alreadyfound == false)`
+```javascript
+if (match1 > 0 && alreadyfound == false)
+```
 
 This test should be self-explanatory: so long as the match contains the search item at least once, and the item has not already been found, then the code contained within the if statement runs. The code within is as follows:
 
-```
+```javascript
 alreadyfound = true
 num = i
 ```
@@ -140,15 +160,19 @@ Naturally, the message box is the most critical aspect of the macros, as the use
 
 Firstly, the message box only needs to be run if something has been inputted and if something has been found:
 
-`if (alreadyfound == true && noinput == false)`
+```javascript
+if (alreadyfound == true && noinput == false)
+```
 
 Thereafter, the macro runs a confirm dialogue and stores the answer in the variable answer.
 
-`answer = confirm('Example 1: ' + ex1[num] + '\nExample 2: ' + ex2[num] + 'Question?')`
+```javascript
+answer = confirm('Example 1: ' + ex1[num] + '\nExample 2: ' + ex2[num] + 'Question?')
+```
 
 Once the user clicks “Yes” (which returns a value of 1) or “No” (which returns 0), the following checks will be run:
 
-```
+```javascript
 if (answer == 0)
 {
 	alreadyfound = false
