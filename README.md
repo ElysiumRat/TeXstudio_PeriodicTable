@@ -18,24 +18,6 @@ The results will come up in a popup box. If you click “Yes”, the macro will 
 
 This section provides a technical overview of the code of the macro and its functionality. This is not necessary for the average user to read, but rather gives an overview of how the macro works. The next section deals with specific code in the macros and explains how they work in detail.
 
-## Arrays
-
-To create an array, you need to call it this way:
-
-```javascript
-var arrayname = ["Input1", "Input2"]
-```
-
-All items in the array need to be placed within the square brackets. Individual items within the array need to be placed between double quotation marks and separated with commas. Unfortunately, TeXstudio only seems to allow for one-dimensional arrays, hence these macros all use multiple arrays with the matching data at the same index. The first item in an array is always at the index point 0.
-
-To call a value from an array, you do so with the following code:
-
-```javascript
-examplevariable = arrayname[i]
-```
-
-So, using the above example, `arrayname[0]` would return “Input1” and store it in `examplevariable`.
-
 ## The UniversalInputDialog
 
 The `UniversalInputDialog` is used to allow the user to input information into the program for the macro to use. However, the structure of it within the code is not exactly intuitive, so a brief description of how it works will be provided here.
@@ -58,7 +40,7 @@ In this code, `DEFAULT` is what is within the textbox that the macro uses, and i
 dlg.add("","Please input:", "textbox")
 ```
 
-In this case, `DEFAULT` needs to be in inverted commas. The other possible types will be discussed now. First, checkbox:
+In this case, `DEFAULT` needs to be in inverted commas. The other possible types will be discussed now, as I struggled to find this information elsewhere and thus documenting it here may be of use to others. First, `checkbox`:
 
 ```javascript
 dlg.add(false, "Please check:", "checkbox")
@@ -72,7 +54,7 @@ Second, `selectbox`:
 dlg.add(["1","2"], "Please select:", "selectbox")
 ```
 
-Whereby the values are contained within an array, as was discussed above.
+Whereby the values are contained within an array.
 
 Finally, there is `numberbox`:
 
@@ -124,20 +106,14 @@ Next, the macros run through the arrays and compare `search` to the contents the
 
 ## Looping through the Arrays
 
-In short, the macro tests the variables in the same position in each array in every loop. This is so that the macro works efficiently, not needing to run through each array in a separate loop. The loop simply runs this way:
-
-```javascript
-while (i < UPPER)
-```
-
-with `UPPER` referring to the highest value of the arrays. The tests are done in the following fashion:
+The tests are done in the following fashion:
 
 ```javascript
 temp1 = array1[i].toUpperCase()
 match1 = temp1.includes(search)
 ```
 
-What this code does is saves the value at position i of the array into a temporary string, which is made uppercase so that it can be compared to search. This is done by checking whether the temporary string from the array includes the contents of search, as the former will generally contain more information than the latter.
+What this code does is saves the value at position `i` of the array into a temporary string, which is made uppercase so that it can be compared to search. This is done by checking whether the temporary string from the array includes the contents of search, as the former will generally contain more information than the latter.
 
 Thereafter, it performs the following test:
 
